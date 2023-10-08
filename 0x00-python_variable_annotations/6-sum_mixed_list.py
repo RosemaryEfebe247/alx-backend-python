@@ -6,7 +6,7 @@ input in int and float and return sun of float
 from typing import List, Union
 
 
-def sum_mixed_list(mxd_lst: List[Union[float, int]]) -> float:
+def sum_mixed_list(mxd_lst: List[Union[int, float]]) -> float:
     """Function takes mixed list of int and float
     returns sum in float
     """
