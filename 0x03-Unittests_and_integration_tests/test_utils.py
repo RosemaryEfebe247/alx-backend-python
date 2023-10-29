@@ -2,7 +2,8 @@
 """ A class that tests multiple parameters"""
 import unittest
 from parameterized import parameterized
-from utils import access_nested_map
+from utils import access_nested_map, get_json
+from unittest.mock import patch, Mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -27,3 +28,21 @@ class TestAccessNestedMap(unittest.TestCase):
         """raise keyError for the following parameters"""
         with self.assertRaises(expected_error):
             access_nested_map(nested_map, path)
+
+
+class TestGetJson(unittest.TestCase):
+    """ Use mock and patch to mimic a url"""
+
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False}),
+        ])
+    def test_get_json(self, test_url, test_payload):
+        """ Test if the mock works"""
+        mock_get = Mock()
+        mock_get.json.return_value = test_payload
+        with patch("utils.requests.get", return_value=mock_get):
+            result = get_json(test_url)
+            print(result)
+        self.assertEqual(result, test_payload)
+        mock_get.assert_called_once_with(test_url)
